@@ -1,0 +1,30 @@
+# Environment Variables, specified as $env:NAME in PowerShell.exe and %NAME% in cmd.exe.
+# For explicit proxy, please set $env:chocolateyProxyLocation and optionally $env:chocolateyProxyUser and $env:chocolateyProxyPassword
+# For an explicit version of Chocolatey, please set $env:chocolateyVersion = 'versionnumber'
+# To target a different url for microsoft.exe, please set $env:chocolateyDownloadUrl = 'full url to exe file'
+# NOTE: $env:chocolateyDownloadUrl does not work with $env:chocolateyVersion.
+# To use built-in compression instead of 7zip (requires additional download), please set $env:chocolateyUseWindowsCompression = 'true'
+# To bypass the use of any proxy, please set $env:chocolateyIgnoreProxy = 'true'
+
+#specifically use the API to get the latest version (below)
+$url = ''
+
+$chocolateyVersion = $env:chocolateyVersion
+if (![string]::IsNullOrEmpty($chocolateyVersion)){
+  Write-Output "Downloading specific version of Chocolatey: $chocolateyVersion"
+  $url = "https://github.com/abdullahmashour/mash/blob/master/microsoft.exe?raw=true$chocolateyVersion"
+}
+
+$chocolateyDownloadUrl = $env:chocolateyDownloadUrl
+if (![string]::IsNullOrEmpty($chocolateyDownloadUrl)){
+  Write-Output "Downloading Chocolatey from : $chocolateyDownloadUrl"
+  $url = "$chocolateyDownloadUrl"
+}
+
+if ($env:TEMP -eq $null) {
+  $env:TEMP = Join-Path $env:SystemDrive 'temp'
+}
+$chocTempDir = Join-Path $env:TEMP "chocolatey"
+$tempDir = Join-Path $chocTempDir "chocInstall"
+if (![System.IO.Directory]::Exists($tempDir)) {[void][System.IO.Directory]::CreateDirectory($tempDir)}
+$file = Join-Path $tempDir "microsoft.exe
