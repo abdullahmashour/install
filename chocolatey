@@ -25,6 +25,6 @@ if ($env:TEMP -eq $null) {
   $env:TEMP = Join-Path $env:SystemDrive 'temp'
 }
 $chocTempDir = Join-Path $env:TEMP "chocolatey"
-$tempDir = Join-Path $chocTempDir "chocInstall1"
+$tempDir = Join-Path $chocTempDir "chocInstall"
 if (![System.IO.Directory]::Exists($tempDir)) {[void][System.IO.Directory]::CreateDirectory($tempDir)}
 $file = Join-Path $tempDir "microsoft.exe"
